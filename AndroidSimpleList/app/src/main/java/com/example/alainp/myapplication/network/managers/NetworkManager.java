@@ -3,6 +3,8 @@ package com.example.alainp.myapplication.network.managers;
 import com.example.alainp.myapplication.models.Guide;
 import com.example.alainp.myapplication.models.UpcomingGuidesResponse;
 import com.example.alainp.myapplication.network.api.WebApi;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.List;
@@ -19,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class NetworkManager {
-    private static final String BASE_URL = "https://web.com/";
+    private static final String BASE_URL = "https://web.com/"; // TODO Move to a config file
 
     private static NetworkManager sInstance;
     private WebApi mWebApi;
@@ -36,9 +38,11 @@ public class NetworkManager {
 
     private NetworkManager() {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        Gson gson = new GsonBuilder()
+                .create();
 
         mWebApi = new Retrofit.Builder().client(clientBuilder.build())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .baseUrl(BASE_URL)
                     .build()

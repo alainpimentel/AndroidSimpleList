@@ -1,5 +1,7 @@
 package com.example.alainp.myapplication.models;
 
+import android.app.Application;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -65,5 +67,4 @@ public class Guide {
     public String getIcon() {
         return icon;
     }
-
 }
