@@ -34,12 +34,31 @@ public class MainActivity extends AppCompatActivity {
         mBinding.recyclerViewGuides.setLayoutManager(layoutManager);
         UpcomingGuidesAdapter adapter = new UpcomingGuidesAdapter();
         mBinding.recyclerViewGuides.setAdapter(adapter);
+
+        mBinding.textErrorMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBinding.progressBar.setVisibility(View.VISIBLE);
+                mBinding.textErrorMessage.setVisibility(View.GONE);
+                fetchData();
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
+        fetchData();
+    }
+
+    @Override
+    protected void onStop() {
+        mCompositeDisposable.clear();
+        super.onStop();
+    }
+
+    private void fetchData() {
         mCompositeDisposable.add(
                 NetworkManager.getInstance().getUpcomingGuides()
                         .observeOn(AndroidSchedulers.mainThread())
@@ -65,12 +84,5 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
         );
-
-    }
-
-    @Override
-    protected void onStop() {
-        mCompositeDisposable.clear();
-        super.onStop();
     }
 }
